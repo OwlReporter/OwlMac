@@ -9,7 +9,6 @@ chmod +x /usr/local/bin/flushdns
 fi
 
 Version=$(defaults read /System/Library/CoreServices/SystemVersion ProductVersion | sed 's/\.//g')
-echo ""
 if [ $Version -gt 10104 ]; then
 sudo killall -HUP mDNSResponder
 echo "Flushed DNS Cache Successfully" 
@@ -25,7 +24,7 @@ echo "Flushed DNS Cache Successfully"
 else
 echo "Unable to Flush DNS Cache"
 fi
-
+echo ""
 # Gives Suggestion to switch to Google Public DNS
 if [ $(whereis scutil) = /usr/sbin/scutil ]; then
 scutil --dns | grep -m 2 'nameserver\[[0-9]*\]'  | awk '{ print  $3 }' |  while read -r line ; do DNS=$(( $DNS + 1 )); if [ $DNS == 1 ]; then  echo "Primary DNS: " $line; elif [ $DNS == 2 ]; then echo "Secondary DNS: " $line; fi; done
