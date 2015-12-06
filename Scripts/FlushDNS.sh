@@ -3,7 +3,11 @@ if [ "$EUID" -ne 0 ]
 then echo "Please run as root"
 exit
 fi
-alias flushdns="curl -Ls 'https://raw.githubusercontent.com/OwlReporter/OwlMac/master/Scripts/FlushDNS.sh' | sudo sh"
+if [ ! -e "/usr/local/bin/flushdns" ]; then
+curl -so /usr/local/bin/flushdns https://raw.githubusercontent.com/OwlReporter/OwlMac/master/Scripts/flushdns
+chmod +x /usr/local/bin/flushdns
+fi
+
 Version=$(defaults read /System/Library/CoreServices/SystemVersion ProductVersion | sed 's/\.//g')
 if [ $Version -gt 10104 ]; then
 sudo killall -HUP mDNSResponder
